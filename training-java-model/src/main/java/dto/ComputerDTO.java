@@ -40,7 +40,10 @@ public class ComputerDTO {
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company = new CompanyDTO(companyId,company);
+		if (companyId > 0)
+		{
+			this.company = new CompanyDTO(companyId,company);
+		}
 	}
 	
 	public ComputerDTO()

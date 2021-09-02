@@ -2,8 +2,11 @@ package api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +52,12 @@ public class CompanyWebService {
 	public List<CompanyDTO> getAllCompanies()
 	{
 		return companyMapper.mapToDTOList(companyService.getAllCompanies());
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public void addComputer(@RequestBody @Valid CompanyDTO company)
+	{
+		companyService.createCompany(companyMapper.mapToCompany(company));
 	}
 	
 	@RequestMapping(params = {"id"}, method = RequestMethod.DELETE)

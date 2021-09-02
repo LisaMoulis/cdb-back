@@ -8,8 +8,6 @@ import javax.persistence.RollbackException;
 import mapper.CompanyDTOMapper;
 
 import model.Company;
-
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -50,7 +48,11 @@ public class CompanyRequestHandler {
 		Session session = sessionFactory.openSession();
 		CompanyDTO company = session.find(CompanyDTO.class, id);
 		session.close();
-		return companyMapper.mapToCompany(company);
+		if (company != null)
+		{
+			return companyMapper.mapToCompany(company);
+		}
+		return null;
 	}
 	
 	public Company getCompany(String name)
@@ -60,7 +62,11 @@ public class CompanyRequestHandler {
 	    query.setParameter("name", name);
 	    CompanyDTO company = query.uniqueResult();
 	    session.close();
-		return companyMapper.mapToCompany(company);
+	    if (company != null)
+		{
+			return companyMapper.mapToCompany(company);
+		}
+		return null;
 	}
 	
 	/**
@@ -73,6 +79,20 @@ public class CompanyRequestHandler {
 		List<CompanyDTO> companies = query.getResultList();
 		session.close();
 		return companyMapper.mapToCompanyList(companies);
+	}
+	
+	public void createCompany(Company company)
+	{
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+		  session.save(companyMapper.mapToDTO(company));
+		  transaction.commit();
+		} catch (RollbackException t) {
+		  transaction.rollback();
+		  throw t;
+		}
+		session.close();
 	}
 	
 	@Transactional

@@ -2,9 +2,10 @@ package service;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import model.Company;
 import persistence.CompanyRequestHandler;
-import persistence.ComputerRequestHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,14 +16,12 @@ import org.springframework.stereotype.*;
 public class CompanyService {
 
 	//private static CompanyService instance;
-	private ComputerRequestHandler computerRequestHandler;
 	private CompanyRequestHandler companyRequestHandler;
 	
 	@Autowired
-	public CompanyService(ComputerRequestHandler computerRequestHandler,CompanyRequestHandler companyRequestHandler)
+	public CompanyService(CompanyRequestHandler companyRequestHandler)
 	{
 		this.companyRequestHandler = companyRequestHandler;
-		this.computerRequestHandler = computerRequestHandler;
 	}
 	
 	/*public static CompanyService getInstance()
@@ -42,6 +41,11 @@ public class CompanyService {
 	public Company getCompany(String name)
 	{
 		return companyRequestHandler.getCompany(name);
+	}
+	
+	public void createCompany(@Valid Company company) throws RuntimeException
+	{
+		companyRequestHandler.createCompany(company);
 	}
 	
 	public void removeCompany(int id)

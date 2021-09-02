@@ -61,11 +61,12 @@ public class AddComputer {
 	}
 	
     @RequestMapping(method = RequestMethod.POST)
-	public String doPost(HttpServletRequest request, HttpServletResponse response, @Valid ComputerDTO dto) throws IOException, ServletException 
+	public String doPost(HttpServletRequest request, HttpServletResponse response, @Valid ComputerDTO dto,@RequestParam(name="companyId", required =false) int companyId) throws IOException, ServletException 
 	{
 		logger.debug("Computer info retrieved. Trying to create the computer.");
 		
 		Computer computer = computerDTOMapper.mapToComputer(dto);
+		computer.setCompany(companyService.getCompany(companyId));
 		try
 		{
 			computerService.createComputer(computer);
