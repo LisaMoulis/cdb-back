@@ -120,8 +120,8 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 	    http
 	      .csrf().disable()
 	      .authorizeRequests()
-	      .antMatchers("/edit*").hasAuthority("USER")
-	      .antMatchers("/add*").hasAuthority("USER")
+	      .antMatchers("/edit*").hasAnyAuthority("USER","ADMIN")
+	      .antMatchers("/add*").hasAnyAuthority("USER","ADMIN")
 	      .antMatchers("/login*").permitAll()
 	      .antMatchers("/computers*").permitAll()
 	      .antMatchers("/static/**").permitAll() 
