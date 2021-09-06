@@ -57,8 +57,6 @@ public class CompanyWebService {
 		return companyMapper.mapToDTO(companyService.getCompany(name));
 	}
 	
-	
-	
 	@RequestMapping(params = {"page","size"},method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public List<CompanyDTO> getAllCompanies(@RequestParam("page") int page, @RequestParam("size") int size)
 	{
@@ -66,6 +64,12 @@ public class CompanyWebService {
 		list.setPage(page);
 		list.setSize(size);
 		return companyMapper.mapToDTOList(pageService.getCompanyList(list));
+	}
+	
+	@RequestMapping(value="/nb", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public int getNb()
+	{
+		return companyService.getNbCompanies("");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })

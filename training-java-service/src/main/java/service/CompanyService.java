@@ -62,4 +62,8 @@ public class CompanyService {
 	{
 		return companyRequestHandler.getAllCompanies();
 	}
+	
+	public int getNbCompanies(String string) {
+		return companyRequestHandler.getNbCompanies(string);
+	}
 }

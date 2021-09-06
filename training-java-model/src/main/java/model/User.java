@@ -2,10 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import javax.persistence.*;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import dto.AuthorityDTO;
 
 public class User implements UserDetails {
 

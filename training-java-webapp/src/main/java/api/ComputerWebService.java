@@ -62,7 +62,12 @@ public class ComputerWebService {
 		return computerMapper.mapToDTOList(pageService.getPage(list,"","computer.id","asc"));
 	}
 		
-
+	@RequestMapping(value="/nb", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public int getNb()
+	{
+		return computerService.getNbComputers("");
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public void addComputer(@RequestBody @Valid ComputerDTO computer)
 	{

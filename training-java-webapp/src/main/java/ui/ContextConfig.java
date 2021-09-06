@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Locale;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -64,7 +69,7 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 	    return bean;
 	}
 	
-	/*@Bean
+	@Bean
 	public LocaleResolver localeResolver() {
 	    SessionLocaleResolver slr = new SessionLocaleResolver();
 	    slr.setDefaultLocale(Locale.US);
@@ -78,10 +83,11 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 	    return lci;
 	}
 	
-	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	    registry.addInterceptor(localeChangeInterceptor());
-	}*/
+	}
+	
+	
 	@Bean
 	public PasswordEncoder encoder() {
 		return  NoOpPasswordEncoder.getInstance();

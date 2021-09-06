@@ -80,4 +80,8 @@ public class ComputerService {
 		}
 		computerRequestHandler.updateComputer(computer,company_id);
 	}
+
+	public int getNbComputers(String string) {
+		return computerRequestHandler.getNbComputers(string);
+	}
 }
