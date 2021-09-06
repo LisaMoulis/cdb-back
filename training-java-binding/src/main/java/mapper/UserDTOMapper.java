@@ -14,7 +14,7 @@ public class UserDTOMapper {
 		{
 			return new User(dto.getUsername(),dto.getPassword(),dto.getAuthorities().get(0).getAuthority());
 		}
-		return new User();
+		return null;
 	}
 	
 	public UserDTO mapToDTO(User user)
@@ -23,6 +23,6 @@ public class UserDTOMapper {
 		{
 			return new UserDTO(user.getUsername(),user.getPassword(),user.getAuthorities().get(0).getAuthority());
 		}
-		return new UserDTO();
+		return null;
 	}
 }

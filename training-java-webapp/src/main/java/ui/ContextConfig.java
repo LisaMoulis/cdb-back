@@ -1,6 +1,11 @@
 package ui;
 
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -12,8 +17,14 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -73,8 +84,8 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 	}*/
 	@Bean
 	public PasswordEncoder encoder() {
-		return NoOpPasswordEncoder.getInstance();
-	}	
+		return  NoOpPasswordEncoder.getInstance();
+	}
 	
 	@Bean
 	public ResourceBundleMessageSource messageSource() {
@@ -106,11 +117,15 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 	    DigestAuthenticationFilter result = new DigestAuthenticationFilter();
 	    if (userService.loadUserByUsername("user") == null)
 	    {
-	    	userService.registerUser(new User("user",encoder().encode("digestsecret")));
+	    	userService.registerUser(new User("user",new String(DigestUtils.md5DigestAsHex("user:Please authenticate:digestsecret".getBytes()))));
+	    }
+	    if (userService.loadUserByUsername("admin") == null)
+	    {
+	    	userService.registerUser(new User("admin",new String(DigestUtils.md5DigestAsHex("admin:Please authenticate:adminsecret".getBytes()))));
 	    }
 	    result.setUserDetailsService(userService);
 	    result.setAuthenticationEntryPoint(entryPoint());
-	    //result.setPasswordAlreadyEncoded(true);
+	    result.setPasswordAlreadyEncoded(true);
 	    return result;
 	}
 	
@@ -118,7 +133,7 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 
 	    http
-	      .csrf().disable()
+	      .csrf().disable().cors().and()
 	      .authorizeRequests()
 	      .antMatchers("/edit*").hasAnyAuthority("USER","ADMIN")
 	      .antMatchers("/add*").hasAnyAuthority("USER","ADMIN")
@@ -141,6 +156,28 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 			.authenticationEntryPoint(entryPoint())
 	      //.logoutSuccessHandler(logoutSuccessHandler());
 	      ;
+	}
+	
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("**").allowedOrigins("*");
+			}
+		};
+	}
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+	    CorsConfiguration configuration = new CorsConfiguration();
+	    configuration.setAllowedOrigins(Collections.singletonList("*"));
+	    configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+	    configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
+	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", configuration);
+	    return source;
 	}
 	
 }

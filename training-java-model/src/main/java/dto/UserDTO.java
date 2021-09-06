@@ -20,7 +20,7 @@ public class UserDTO implements UserDetails {
 	@Column
 	private String authority;
 	@Column
-	private boolean enabled;
+	private boolean enabled = true;
 	@Transient
 	private boolean accountExpired = false;
 	@Transient
