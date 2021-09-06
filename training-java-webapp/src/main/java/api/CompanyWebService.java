@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dto.CompanyDTO;
 import mapper.CompanyDTOMapper;
+import model.CompanyList;
 import service.CompanyService;
+import service.PageService;
 
 
 @RestController
@@ -23,6 +25,7 @@ public class CompanyWebService {
 
 	private CompanyService companyService;
 	private CompanyDTOMapper companyMapper;
+	private PageService pageService;
 	
 	@Autowired
 	public void setCompanyService(CompanyService companyService)
@@ -34,6 +37,12 @@ public class CompanyWebService {
 	public void setCompanyMapper(CompanyDTOMapper companyMapper)
 	{
 		this.companyMapper = companyMapper;
+	}
+	
+	@Autowired
+	public void setPageService(PageService pageService)
+	{
+		this.pageService = pageService;
 	}
 	
 	@RequestMapping(params = {"id"}, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -48,10 +57,15 @@ public class CompanyWebService {
 		return companyMapper.mapToDTO(companyService.getCompany(name));
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public List<CompanyDTO> getAllCompanies()
+	
+	
+	@RequestMapping(params = {"page","size"},method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public List<CompanyDTO> getAllCompanies(@RequestParam("page") int page, @RequestParam("size") int size)
 	{
-		return companyMapper.mapToDTOList(companyService.getAllCompanies());
+		CompanyList list = new CompanyList();
+		list.setPage(page);
+		list.setSize(size);
+		return companyMapper.mapToDTOList(pageService.getCompanyList(list));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })

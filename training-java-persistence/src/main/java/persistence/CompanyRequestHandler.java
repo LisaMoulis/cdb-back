@@ -1,6 +1,7 @@
 package persistence;
 
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.RollbackException;
@@ -8,6 +9,7 @@ import javax.persistence.RollbackException;
 import mapper.CompanyDTOMapper;
 
 import model.Company;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -32,10 +34,12 @@ public class CompanyRequestHandler {
 	 * @param id	Identifier of a company
 	 * @return The company found
 	 */
+	private static final String GET_PAGE  = "SELECT * FROM `company` ";
+	private static final String GET_NB_COMPANIES = "SELECT COUNT(company.id) FROM `company` WHERE LOWER(computer.name) LIKE ?"; 
+
 	
 	private SessionFactory sessionFactory;
 	private CompanyDTOMapper companyMapper;
-	
 	@Autowired
 	public CompanyRequestHandler(SessionFactory sessionFactory, CompanyDTOMapper companyMapper)
 	{
@@ -79,6 +83,52 @@ public class CompanyRequestHandler {
 		List<CompanyDTO> companies = query.getResultList();
 		session.close();
 		return companyMapper.mapToCompanyList(companies);
+	}
+	
+	public List<Company> getPage(int size, int offset)
+	{
+		Session session = sessionFactory.openSession();
+		String str = GET_PAGE ;/*+ column + " " + sense;
+		try {
+			int id = Integer.valueOf(search);
+			str = str+ " OR c.id = " + id;
+		}
+		catch (Exception e)
+		{}
+			*/
+		str = str + " LIMIT ? OFFSET ?";
+
+		@SuppressWarnings("unchecked")
+		Query<CompanyDTO> query = session.createSQLQuery(str).addEntity(CompanyDTO.class);
+		
+		//query.setParameter(1, "%"+search.toLowerCase()+"%");
+		//query.setParameter(2, "%"+search.toLowerCase()+"%");
+		query.setParameter(1, size);
+		query.setParameter(2, offset);
+		List<CompanyDTO> page = query.getResultList();
+		session.close();
+		return companyMapper.mapToCompanyList(page);
+	}
+	
+	public int getNbCompanies(String search)
+	{
+		String str = GET_NB_COMPANIES;
+		/*try {
+			int id = Integer.valueOf(search);
+			str = str+ " OR computer.id = " + id;
+		}
+		catch (Exception e)
+		{}*/
+		Session session = sessionFactory.openSession();
+		//dbConnection.getLogger().info("Nb computers : " + result.getInt(1));
+		@SuppressWarnings("unchecked")
+		Query<BigInteger> query = session.createSQLQuery(str);
+		
+		query.setParameter(1, "%"+search.toLowerCase()+"%");
+		//query.setParameter(2, "%"+search.toLowerCase()+"%");
+		int nb = query.uniqueResult().intValue();
+		session.close();
+		return nb;
 	}
 	
 	public void createCompany(Company company)

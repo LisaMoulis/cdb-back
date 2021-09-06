@@ -72,7 +72,6 @@ public class ComputerWebService {
 	@RequestMapping(method = RequestMethod.PUT, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public void updateComputer(@RequestBody @Valid ComputerDTO computer)
 	{
-		System.out.println(computer);
 		computerService.updateComputer(computerMapper.mapToComputer(computer));
 	}
 	

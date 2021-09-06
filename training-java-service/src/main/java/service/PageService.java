@@ -3,6 +3,7 @@ package service;
 import java.util.List;
 
 import model.*;
+import persistence.CompanyRequestHandler;
 import persistence.ComputerRequestHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ public class PageService {
 	//private static PageService instance;
 	@Autowired
 	private ComputerRequestHandler computerRequestHandler;
-
+	@Autowired
+	private CompanyRequestHandler companyRequestHandler;
+	
 	public PageService()
 	{}
 	
@@ -29,6 +32,16 @@ public class PageService {
 	public int getNbComputers(String search)
 	{
 		return computerRequestHandler.getNbComputers(search);
+	}
+
+	public List<Company> getCompanyList(CompanyList page) {
+		page.setCompanies(companyRequestHandler.getPage(page.getSize(),page.getOffset()));
+		return page.getCompanies();
+	}
+	
+	public int getNbCompanies(String search)
+	{
+		return companyRequestHandler.getNbCompanies(search);
 	}
 	
 }
