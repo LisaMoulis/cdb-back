@@ -1,6 +1,7 @@
 package mapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -24,12 +25,12 @@ public class CompanyDTOMapper {
 	
 	public List<CompanyDTO> mapToDTOList(List<Company> companies)
 	{
-		List<CompanyDTO> dto = (List<CompanyDTO>) companies.stream().map(e -> mapToDTO(e)).toList();
+		List<CompanyDTO> dto = (List<CompanyDTO>) companies.stream().map(e -> mapToDTO(e)).collect(Collectors.toList());
 		return dto;
 	}
 
 	public List<Company> mapToCompanyList(List<CompanyDTO> dto) {
-		List<Company> companies = (List<Company>) dto.stream().map(e -> mapToCompany(e)).toList();
+		List<Company> companies = (List<Company>) dto.stream().map(e -> mapToCompany(e)).collect(Collectors.toList());
 		return companies;
 	}
 }

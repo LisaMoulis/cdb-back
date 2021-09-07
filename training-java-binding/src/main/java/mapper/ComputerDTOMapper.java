@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -72,12 +73,12 @@ public class ComputerDTOMapper {
 	
 	public List<ComputerDTO> mapToDTOList(List<Computer> computers)
 	{
-		List<ComputerDTO> dto = (List<ComputerDTO>) computers.stream().map(e -> mapToDTO(e)).toList();
+		List<ComputerDTO> dto = (List<ComputerDTO>) computers.stream().map(e -> mapToDTO(e)).collect(Collectors.toList());
 		return dto;
 	}
 
 	public List<Computer> mapToComputerList(List<ComputerDTO> dto) {
-		List<Computer> computers = (List<Computer>) dto.stream().map(e -> mapToComputer(e)).toList();
+		List<Computer> computers = (List<Computer>) dto.stream().map(e -> mapToComputer(e)).collect(Collectors.toList());
 		return computers;
 	}
 }
