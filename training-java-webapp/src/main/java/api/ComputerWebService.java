@@ -54,12 +54,12 @@ public class ComputerWebService {
 	
 
 	@RequestMapping(params = {"page","size"}, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public List<ComputerDTO> getAllComputers(@RequestParam("page") int page, @RequestParam("size") int size)
+	public List<ComputerDTO> getAllComputers(@RequestParam("page") int page, @RequestParam("size") int size,@RequestParam(name = "search", defaultValue = "") String search,@RequestParam(name = "order", defaultValue = "computer.id") String order, @RequestParam(name = "direction", defaultValue = "asc") String dir)
 	{
 		ComputerList list = new ComputerList();
 		list.setPage(page);
 		list.setSize(size);
-		return computerMapper.mapToDTOList(pageService.getPage(list,"","computer.id","asc"));
+		return computerMapper.mapToDTOList(pageService.getPage(list,search,order,dir));
 	}
 		
 	@RequestMapping(value="/nb", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })

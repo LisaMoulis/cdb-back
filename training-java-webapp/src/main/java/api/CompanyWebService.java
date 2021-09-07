@@ -58,7 +58,7 @@ public class CompanyWebService {
 	}
 	
 	@RequestMapping(params = {"page","size"},method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public List<CompanyDTO> getAllCompanies(@RequestParam("page") int page, @RequestParam("size") int size)
+	public List<CompanyDTO> getAllCompanies(@RequestParam("page") int page, @RequestParam("size") int size,@RequestParam(name = "search", defaultValue = "") String search,@RequestParam(name = "order", defaultValue = "company.id") String order, @RequestParam(name = "direction", defaultValue = "asc") String dir)
 	{
 		CompanyList list = new CompanyList();
 		list.setPage(page);
