@@ -190,9 +190,16 @@
 	    <version>2.12</version>
 	</dependency>
 	
+	<dependency>
+    <groupId>cglib</groupId>
+    <artifactId>cglib</artifactId>
+    <version>3.2.4</version>
+</dependency>
+	
 	</dependencies>
 	</dependencyManagement>
 	<modules>
+		<module>training-java-aop</module>
 		<module>training-java-binding</module>
 		<module>training-java-console</module>
 		<module>training-java-webapp</module>

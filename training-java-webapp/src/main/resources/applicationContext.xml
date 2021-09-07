@@ -11,6 +11,8 @@
            http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
                
     <context:annotation-config/>
-    <!-- <aop:aspectj-autoproxy/>-->
+    
+    <aop:aspectj-autoproxy/>
+    
     <bean class="ui.ContextConfig"/>
 </beans>

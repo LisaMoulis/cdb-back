@@ -29,6 +29,11 @@
 	    <artifactId>training-java-binding</artifactId>
 	    <version>0.0.1-SNAPSHOT</version>
 	</dependency>
+	<dependency>
+	    <groupId>training-java</groupId>
+	    <artifactId>training-java-aop</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	</dependency>
 	
 	
 	<dependency>

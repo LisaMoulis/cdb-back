@@ -30,13 +30,14 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import aop.AopConfig;
 import dto.*;
 import model.*;
 import service.UserService;
 //import aop.AopConfig;
 
 @Configuration
-//@Import({ AopConfig.class })
+@Import({ AopConfig.class })
 @ComponentScan(basePackages = { "command","service","persistence","mapper","ui.servlets", "api","training-java-persistence.src/main/java.persistence",
 		"training-java-persistence.persistence" ,"training-java.training-java-persistence.persistence","training-java.training-java-persistence.src/main/java.persistence" })
 @EnableWebMvc
