@@ -1,8 +1,5 @@
 package ui;
 
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
@@ -33,9 +30,6 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 import dto.*;
 import model.*;
 import service.UserService;
@@ -47,18 +41,10 @@ import service.UserService;
 		"training-java-persistence.persistence" ,"training-java.training-java-persistence.persistence","training-java.training-java-persistence.src/main/java.persistence" })
 @EnableWebMvc
 @EnableWebSecurity
-public class ContextConfig extends WebSecurityConfigurerAdapter {
+public class ContextConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Bean
-	public HikariDataSource dataSource()
-	{
-		HikariConfig config = new HikariConfig("/datasource.properties");
-		config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		return new HikariDataSource(config);
-	}
 	
 	@Bean
 	public ViewResolver internalResourceViewResolver() {
@@ -83,6 +69,7 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 	    return lci;
 	}
 	
+	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 	    registry.addInterceptor(localeChangeInterceptor());
 	}
@@ -93,16 +80,15 @@ public class ContextConfig extends WebSecurityConfigurerAdapter {
 		return  NoOpPasswordEncoder.getInstance();
 	}
 	
-	@Bean
+	/*@Bean
 	public ResourceBundleMessageSource messageSource() {
 
 		ResourceBundleMessageSource source = new ResourceBundleMessageSource();
 	    source.setBasenames("/messages");
-	    source.setUseCodeAsDefaultMessage(true);
+	    //source.setUseCodeAsDefaultMessage(true);
 	       //source.setDefaultEncoding("UTF-8");
-
 	    return source;
-	}
+	}*/
 	
 	@Bean
 	public SessionFactory sessionFactory() 
