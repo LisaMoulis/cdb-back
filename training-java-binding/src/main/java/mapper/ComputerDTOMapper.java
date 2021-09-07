@@ -33,13 +33,13 @@ public class ComputerDTOMapper {
 		//Verify if some columns are empty before getting them
 		if (dto.getIntroduced() != null && !dto.getIntroduced().equals("") && !dto.getIntroduced().contains("0000-00-00"))
 		{
-			dto.setIntroduced(dto.getIntroduced().replace(" 00:00:00",""));
+			dto.setIntroduced(dto.getIntroduced().split(" ")[0]);
 			builder.setIntroduced(LocalDate.parse(dto.getIntroduced(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		}
 		
 		if (dto.getDiscontinued() != null && !dto.getDiscontinued().equals("") && !dto.getDiscontinued().contains("0000-00-00"))
 		{
-			dto.setDiscontinued(dto.getDiscontinued().replace(" 00:00:00",""));
+			dto.setDiscontinued(dto.getDiscontinued().split(" ")[0]);
 			builder.setDiscontinued(LocalDate.parse(dto.getDiscontinued(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		}
 		if (dto.getCompany() != null)
