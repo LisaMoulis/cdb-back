@@ -63,9 +63,9 @@ public class ComputerWebService {
 	}
 		
 	@RequestMapping(value="/nb", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public int getNb()
+	public int getNb(@RequestParam(name = "search", defaultValue="") String search)
 	{
-		return computerService.getNbComputers("");
+		return computerService.getNbComputers(search);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })
