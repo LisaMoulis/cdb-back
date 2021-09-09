@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -133,7 +134,10 @@ public class ContextConfig extends WebSecurityConfigurerAdapter implements WebMv
 	      .antMatchers("/login*").permitAll()
 	      .antMatchers("/computers*").permitAll()
 	      .antMatchers("/static/**").permitAll() 
-	      .antMatchers("/service/**").permitAll()
+	      .antMatchers(HttpMethod.GET,"/service/**").hasAnyAuthority("USER","ADMIN")
+	      .antMatchers(HttpMethod.POST,"/service/**").hasAnyAuthority("USER","ADMIN")
+	      .antMatchers(HttpMethod.PUT,"/service/**").hasAnyAuthority("USER","ADMIN")
+	      .antMatchers(HttpMethod.DELETE,"/service/**").hasAnyAuthority("ADMIN")
 	      .anyRequest().authenticated()
 	      .and()
 	      .formLogin()
@@ -164,10 +168,11 @@ public class ContextConfig extends WebSecurityConfigurerAdapter implements WebMv
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 	    CorsConfiguration configuration = new CorsConfiguration();
+	    configuration.setAllowedOriginPatterns(Arrays.asList("*"));
 	    configuration.setAllowedOrigins(Collections.singletonList("*"));
 	    configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-	    configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
-	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
+	    configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type","WWW-Authenticate","Authenticate"));
+	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type","WWW-Authenticate","Authenticate"));
 	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    source.registerCorsConfiguration("/**", configuration);
 	    return source;
