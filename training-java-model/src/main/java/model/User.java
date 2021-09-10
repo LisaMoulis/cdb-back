@@ -55,12 +55,12 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return !this.accountExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return !this.locked;
 	}
 
 	@Override
@@ -71,5 +71,9 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.enabled;
+	}
+
+	public String getAuthority() {
+		return this.authority;
 	}
 }
