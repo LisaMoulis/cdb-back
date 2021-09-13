@@ -16,7 +16,7 @@ import service.UserService;
 
 
 @RestController
-@RequestMapping("/service/login")
+@RequestMapping("/service")
 public class UserWebService {
 
 	private UserService userService;
@@ -28,13 +28,20 @@ public class UserWebService {
 		this.userService = userService;
 	}
 	
-	@RequestMapping(params = {"username"}, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@Autowired
+	public void setUserService(UserDTOMapper userMapper)
+	{
+		this.userMapper = userMapper;
+	}
+	
+	
+	@RequestMapping(value = "/login", params = {"username"}, method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getUserAuthority(@RequestParam("username") String username)
 	{
 		return "{ \"authority\":\"" + userService.getUser(username).getAuthority() + "\" }";
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public void addUser(@RequestBody @Valid UserDTO user)
 	{
 		userService.registerUser(userMapper.mapToUser(user));

@@ -18,7 +18,7 @@ public class UserDTO implements UserDetails {
 	@Column
 	private String password;
 	@Column
-	private String authority;
+	private String authority = "USER";
 	@Column
 	private boolean enabled = true;
 	@Transient

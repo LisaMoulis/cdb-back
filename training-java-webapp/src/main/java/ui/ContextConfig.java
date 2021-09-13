@@ -134,6 +134,7 @@ public class ContextConfig extends WebSecurityConfigurerAdapter implements WebMv
 	      .antMatchers("/login*").permitAll()
 	      .antMatchers("/computers*").permitAll()
 	      .antMatchers("/static/**").permitAll() 
+	      .antMatchers(HttpMethod.POST,"/service/register").permitAll()
 	      .antMatchers(HttpMethod.GET,"/service/**").hasAnyAuthority("USER","ADMIN")
 	      .antMatchers(HttpMethod.POST,"/service/**").hasAnyAuthority("USER","ADMIN")
 	      .antMatchers(HttpMethod.PUT,"/service/**").hasAnyAuthority("USER","ADMIN")
