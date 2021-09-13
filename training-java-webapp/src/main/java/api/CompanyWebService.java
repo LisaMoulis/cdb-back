@@ -63,7 +63,7 @@ public class CompanyWebService {
 		CompanyList list = new CompanyList();
 		list.setPage(page);
 		list.setSize(size);
-		return companyMapper.mapToDTOList(pageService.getCompanyList(list));
+		return companyMapper.mapToDTOList(pageService.getCompanyList(list,search, order, dir));
 	}
 	
 	@RequestMapping(value="/nb", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })

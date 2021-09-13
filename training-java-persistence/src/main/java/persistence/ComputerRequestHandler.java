@@ -88,7 +88,7 @@ public class ComputerRequestHandler {
 		String str = GET_PAGE + column + " " + sense;
 		try {
 			int id = Integer.valueOf(search);
-			str = str+ " OR c.id = " + id;
+			str = str+ " OR computer.id = " + id;
 		}
 		catch (Exception e)
 		{}

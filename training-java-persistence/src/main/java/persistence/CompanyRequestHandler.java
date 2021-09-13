@@ -34,8 +34,8 @@ public class CompanyRequestHandler {
 	 * @param id	Identifier of a company
 	 * @return The company found
 	 */
-	private static final String GET_PAGE  = "SELECT * FROM `company` ";
-	private static final String GET_NB_COMPANIES = "SELECT COUNT(company.id) FROM `company` WHERE LOWER(computer.name) LIKE ?"; 
+	private static final String GET_PAGE  = "SELECT * FROM `company` WHERE LOWER(company.name) LIKE ? ORDER BY ";
+	private static final String GET_NB_COMPANIES = "SELECT COUNT(company.id) FROM `company` WHERE LOWER(company.name) LIKE ?"; 
 
 	
 	private SessionFactory sessionFactory;
@@ -85,26 +85,26 @@ public class CompanyRequestHandler {
 		return companyMapper.mapToCompanyList(companies);
 	}
 	
-	public List<Company> getPage(int size, int offset)
+	public List<Company> getPage(int size, int offset, String search , String column, String sense)
 	{
 		Session session = sessionFactory.openSession();
-		String str = GET_PAGE ;/*+ column + " " + sense;
+		String str = GET_PAGE + column + " " + sense;
 		try {
 			int id = Integer.valueOf(search);
-			str = str+ " OR c.id = " + id;
+			str = str+ " OR company.id = " + id;
 		}
 		catch (Exception e)
 		{}
-			*/
+			
 		str = str + " LIMIT ? OFFSET ?";
 
 		@SuppressWarnings("unchecked")
 		Query<CompanyDTO> query = session.createSQLQuery(str).addEntity(CompanyDTO.class);
 		
-		//query.setParameter(1, "%"+search.toLowerCase()+"%");
+		query.setParameter(1, "%"+search.toLowerCase()+"%");
 		//query.setParameter(2, "%"+search.toLowerCase()+"%");
-		query.setParameter(1, size);
-		query.setParameter(2, offset);
+		query.setParameter(2, size);
+		query.setParameter(3, offset);
 		List<CompanyDTO> page = query.getResultList();
 		session.close();
 		return companyMapper.mapToCompanyList(page);

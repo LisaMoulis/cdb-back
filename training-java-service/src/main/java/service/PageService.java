@@ -34,8 +34,8 @@ public class PageService {
 		return computerRequestHandler.getNbComputers(search);
 	}
 
-	public List<Company> getCompanyList(CompanyList page) {
-		page.setCompanies(companyRequestHandler.getPage(page.getSize(),page.getOffset()));
+	public List<Company> getCompanyList(CompanyList page, String search, String column, String dir) {
+		page.setCompanies(companyRequestHandler.getPage(page.getSize(),page.getOffset(), search, column, dir));
 		return page.getCompanies();
 	}
 	
