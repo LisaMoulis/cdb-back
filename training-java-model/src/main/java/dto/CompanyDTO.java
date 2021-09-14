@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class CompanyDTO {
 
 	@Id
-	private int id = -1;
+	private int id;
 	@Column
 	private String name;
 	
