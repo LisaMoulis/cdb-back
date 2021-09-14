@@ -48,6 +48,11 @@ public class CompanyService {
 		companyRequestHandler.createCompany(company);
 	}
 	
+	public void updateCompany(@Valid Company company) throws RuntimeException
+	{
+		companyRequestHandler.updateCompany(company);
+	}
+	
 	public void removeCompany(int id)
 	{
 		companyRequestHandler.deleteCompany(id);

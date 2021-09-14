@@ -145,6 +145,21 @@ public class CompanyRequestHandler {
 		session.close();
 	}
 	
+	public void updateCompany(Company company)
+	{
+		Session session = sessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+		  session.update(companyMapper.mapToDTO(company));
+		  transaction.commit();
+		} catch (RollbackException t) {
+		  transaction.rollback();
+		  throw t;
+		}
+		session.close();
+		//jdbcTemplate.update("UPDATE `computer` SET "+ computerDAOMapper.mapToUpdate(computer,company_id) + "WHERE id=?",new Object[] {computer.getId()}, new int[] {Types.INTEGER});
+	}
+	
 	@Transactional
 	public void deleteCompany(int id)
 	{

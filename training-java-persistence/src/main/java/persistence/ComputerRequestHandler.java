@@ -153,7 +153,6 @@ public class ComputerRequestHandler {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			System.out.println(computerMapper.mapToDTO(computer));
 		  session.update(computerMapper.mapToDTO(computer));
 		  transaction.commit();
 		} catch (RollbackException t) {

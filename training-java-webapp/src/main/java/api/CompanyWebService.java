@@ -78,6 +78,12 @@ public class CompanyWebService {
 		companyService.createCompany(companyMapper.mapToCompany(company));
 	}
 	
+	@RequestMapping(method = RequestMethod.PUT, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public void updateCompany(@RequestBody @Valid CompanyDTO company)
+	{
+		companyService.updateCompany(companyMapper.mapToCompany(company));
+	}
+	
 	@RequestMapping(params = {"id"}, method = RequestMethod.DELETE)
 	public void deleteCompany(@RequestParam("id") int id)
 	{
